@@ -9,6 +9,23 @@ from nltk import data, word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import json
+
+def read_corpus(path):
+    # detect type, open
+    f = open(path, 'r', errors='ignore')
+    if path.split('.')[-1] == "json":
+        flat_msgs = []
+        convos = json.load(f)
+        for convo in convos:
+            msgs = [msg['text'] for msg in convo]
+            flat_msgs += msgs
+        return flat_msgs
+    else:
+        raw = f.read()
+        sent_detector = data.load('tokenizers/punkt/english.pickle')
+        return sent_detector.tokenize(raw)
+
 
 class TextGenerator:
     def __init__(self, corpus):
@@ -22,10 +39,7 @@ class TextGenerator:
         self.lemmer = WordNetLemmatizer()
         #sentences = self.preprocess(corpus)
         #self.train(X)
-        sent_detector = data.load('tokenizers/punkt/english.pickle')
-        f = open(corpus, 'r', errors='ignore')
-        raw = f.read()
-        self.sentences = sent_detector.tokenize(raw)
+        self.sentences = read_corpus(corpus)
         self.vectorizer = TfidfVectorizer(tokenizer=self.tokenize, stop_words='english')
         self.tfidf = self.vectorizer.fit_transform(self.sentences)
         print("done!")
