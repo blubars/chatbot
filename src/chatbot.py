@@ -50,8 +50,12 @@ class Chatbot:
         self.history = []
         self.context_stack = ContextStack()
         self.commands = ("help")
-        self.understander = Understander()
-        self.generator = TextGenerator(corpus)
+        print("Learning how to understand... ", end="")
+        self.understander = Understander(verbosity=verbosity)
+        print("done")
+        print("Learning how to speak... ", end="")
+        self.generator = TextGenerator(corpus, verbosity=verbosity)
+        print("done")
         self.verbosity = verbosity
 
     def run(self):

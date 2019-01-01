@@ -1,14 +1,12 @@
 
 class Understander:
     def __init__(self, verbosity=1):
-        print("Learning how to understand...  ", end="")
         self.greeting_inputs = ("hello", "hi", "greetings", "sup", "what's up", "hey")
         self.verbosity = verbosity
         # WordNet is a semantically-oriented dictionary of English included in NLTK.
         #self.lemmer = WordNetLemmatizer()
         #sentences = self.preprocess(corpus)
         #self.train(X)
-        print("done!")
 
     def train(self, X):
         # incremental training
